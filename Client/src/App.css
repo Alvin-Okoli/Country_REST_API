@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+
+@layer components{
+    body {
+        background-color: rgb(250, 250, 250);
+    }
+
+    .darkmodeBg{
+        background-color: rgb(32, 44, 55);
+    }
+
+    .darkmode{
+        background-color: rgb(43, 57, 69);
+        color: white;
+    }
+
+    .infoKey{
+        font-weight: bold
+    }
+
+    .infoValue{
+        color: rgb(17, 21, 23);
+    }
+}
