@@ -4,6 +4,7 @@
 @layer components{
     body {
         background-color: rgb(250, 250, 250);
+        margin-right: -2px;
     }
 
     .darkmodeBg{
