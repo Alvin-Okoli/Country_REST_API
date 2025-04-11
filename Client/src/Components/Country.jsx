@@ -12,14 +12,22 @@ export default function Country(){
     const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(()=>{
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         const fetchdata = async()=>{
-            const res = await fetch('http://localhost:5000/load');
+            const res = await fetch('http://localhost:5000/load', {signal});
             const data = await res.json();
             setData(data);
             console.log(data)
         }
 
         fetchdata()
+
+        return ()=>{
+            controller.abort()
+        }
     }, [])
 
     const showOption = ()=>{        
