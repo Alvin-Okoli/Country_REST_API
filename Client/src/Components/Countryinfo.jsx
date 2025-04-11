@@ -44,7 +44,7 @@ export default function Countryinfo(){
 
                             <div className="my-3 md:my-2">
                                 <span className="font-semibold md:infoKey">Population : </span>
-                                <span> {datas.population}</span>
+                                <span> {(datas.population).toLocaleString()}</span>
                             </div>
 
                             <div className="my-3 md:my-2">

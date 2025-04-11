@@ -9,16 +9,25 @@ export default function Country(){
     const [data, setData] = useState([])
     const [show, setShow] = useState(false)
     const [regionFilter, setRegionFilter] = useState('')
+    const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(()=>{
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         const fetchdata = async()=>{
-            const res = await fetch('http://localhost:5000/load');
+            const res = await fetch('http://localhost:5000/load', {signal});
             const data = await res.json();
             setData(data);
             console.log(data)
         }
 
         fetchdata()
+
+        return ()=>{
+            controller.abort()
+        }
     }, [])
 
     const showOption = ()=>{        
@@ -33,6 +42,14 @@ export default function Country(){
         setRegionFilter(filter)
     }
 
+    const handleSearch = (e)=>{setSearchTerm(e.target.value)}
+
+    const filteredData = data.filter(country=>{
+        const matchesRegion = regionFilter? country.region === regionFilter : true;
+        const matchesSearch = searchTerm? country.name.toLowerCase().includes(searchTerm.toLowerCase()) : true;
+        return matchesRegion && matchesSearch
+    })
+
 
 
     return(
@@ -41,14 +58,18 @@ export default function Country(){
 
                 <div className='grid grid-cols-1 md:flex md:justify-between'>
 
-                    <div className="w-[90%] mb-5 shadow py-3 pl-7 rounded-[5px] bg-white mx-auto md:pl-[-28px] md:w-80 md:mx-0">
+                    <div className="w-[90%] mb-5 shadow pl-7 py-3 rounded-[5px] bg-white mx-auto md:pl-[-28px] md:w-80 md:mx-0">
                         <img src={searchSvg} alt="search icon" className="inline-block w-5 mr-5"/>
-                        <input type="search" placeholder="search for a country..." className="outline-none" />
+                        <input type="search" 
+                        placeholder="search for a country..." 
+                        className="outline-none md:w-60"
+                        onChange={handleSearch}
+                        value={searchTerm} />
                     </div>
 
                     <div className='relative pt-2 shadow w-52 px-5 bg-white rounded-[5px] cursor-pointer z-1 ml-5'>
                         
-                        <div className="flex justify-between py-5 md:py-3" onClick={showOption}>
+                        <div className="flex justify-between py-3 md:py-3" onClick={showOption}>
                         {show? <> <span>Reset Filters</span> 
                          <span className='text-sm'><img src={arrowDown} className='w-5 mt-1'/></span> </>
                          :
@@ -59,7 +80,7 @@ export default function Country(){
                         {show &&  
                         <div className='absolute top-4 mt-17 bg-white w-52 right-0 pl-5 rounded-[10px] py-4'>
                             <div id='Africa' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>Africa</div>
-                            <div id='America' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>America</div>
+                            <div id='Americas' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>America</div>
                             <div id='Asia' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>Asia</div>
                             <div id='Europe' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>Europe</div>
                             <div id='Oceania' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>Oceania</div>
@@ -69,10 +90,10 @@ export default function Country(){
 
                 </div>
 
-                {regionFilter? null: <div className='grid grid-cols-1 gap-6 mx-2 mt-15 md:grid-cols-2 md:gap-10 lg:grid-cols-4'>
-                    {data.map((datas)=>(
+                <div className='grid grid-cols-1 gap-6 mx-2 mt-15 md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-14'>
+                    {filteredData.map((datas)=>(
                             <NavLink to={`/country/${datas.name}`} className='cards shadow cursor-pointer bg-white mx-6 rounded-l pb-6 md:mx-0' key={datas.name}>
-                                <img src={datas.flag} alt={datas.name} className='w-full mb-2 md:h-52'/> 
+                                <img src={datas.flag} alt={datas.name} className='w-full mb-2 object-cover md:h-52'/> 
                                 <div>
                                     <div className='p-5'>
                                         <div className='font-bold my-3'>{datas.name}</div>
@@ -85,7 +106,6 @@ export default function Country(){
                         ))
                     }
                 </div>
-                    }
 
             </div>
             <Outlet/>
