@@ -57,10 +57,10 @@ export default function Country(){
         else{
             mainBg.classList.remove('darkmodeBg')//switch to the light enviroment
             if(filterBg){
-                filterBg.classList.remove('bg-white')
+                filterBg.classList.add('bg-white')
             }//to switch light mode for filter background
             Array.from(filter).forEach((elements=>{
-                elements.classList.add('darkmode')
+                elements.classList.remove('darkmode')
             }))//to switch to ligth mode for filter options
             Array.from(element).forEach((elements=>{
                 elements.classList.remove('darkmode')
