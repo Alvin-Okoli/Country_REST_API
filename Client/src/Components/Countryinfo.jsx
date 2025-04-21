@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { NavLink, useLoaderData, Outlet, useNavigate } from "react-router";
+import { themeContext } from "./themeProvider";
 
 
 export default function Countryinfo(){
-
-   const {data} = useLoaderData();
-   console.log(data);
-   const datas = data[0];
-   const navigate = useNavigate();
+    const {data} = useLoaderData();
+    console.log(data);
+    const datas = data[0];
+    const navigate = useNavigate();
+    const {mode} = useContext(themeContext);
 
    const displayNestedArray = (languages)=>{
         let language = languages.map((lang)=>{
@@ -16,11 +17,26 @@ export default function Countryinfo(){
         return language.join(', ');
     }
 
-   
+    useEffect(()=>{
+        const container = document.getElementById('container')
+        const button = document.getElementById('button')
+        if(mode === true){
+            container.classList.add('darkmodeBg')
+            button.classList.add('darkmode')
+            button.classList.remove('bg-white')
+        }
+        else {
+            container.classList.remove('darkmodeBg')
+            button.classList.remove('darkmode')
+            button.classList.add('bg-white')
+        }
+    },
+        [mode]
+    )
 
     return(
-        <div className="px-4 mb-20">
-            <button to='/' className="shadow py-2 m-5 mt-10 w-28 md:w-32 bg-white cursor-pointer" onClick={()=>navigate('/')}> &#8592; Back</button>
+        <div id="container" className="px-4 mb-20">
+            <button id="button" to='/' className="shadow py-2 m-5 mt-10 w-28 md:w-32 bg-white cursor-pointer" onClick={()=>navigate('/')}> &#8592; Back</button>
             
             <div className="grid grid-cols-1 md:grid-cols-2 mt-10">
 
