@@ -1,10 +1,13 @@
 import { Outlet } from "react-router";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import darkModeSvg from "../assets/moon-svgrepo-com (1).svg" ;
 import darkModeInUseSvg from "../assets/sunny-night-svgrepo-com.svg";
+import { themeContext } from "./themeProvider";
+
 
 export default function Nav(){
-    const [mode, setMode] = useState(false);
+    let {mode ,setMode} = useContext(themeContext)
+    console.log(mode)
 
     const changeMode = ()=>{
         if(mode === false){
@@ -13,11 +16,13 @@ export default function Nav(){
 
         const navBg = document.getElementById('navBg')
         navBg.classList.toggle('darkmode')
+
+
     }
 
     return(
         <>
-            <div id="navBg" className="flex justify-between px-6 pt-5 lg:px-20 mx-[-1px] h-18 border border-gray-100 shadow">
+            <div id="navBg" className="flex justify-between px-6 pt-5 lg:px-20 mx-[-1px] h-18 shadow">
             <div className="font-bold">Where in the world?</div>
 
             <div 
@@ -27,11 +32,12 @@ export default function Nav(){
                 {mode?
 
                 <div> <img src={darkModeInUseSvg} alt="dark mode" className="inline-block w-3"/> 
-                <span className="ml-1">Light Mode</span></div>
+                <span className="ml-1 text-white">Light Mode</span></div>
 
         : 
 
-                <div> <img src={darkModeSvg} alt="dark mode" className="inline-block w-3"/> <span className="ml-1"> Dark Mode</span></div> 
+                <div> <img src={darkModeSvg} alt="dark mode" className="inline-block w-3"/> 
+                <span className="ml-1"> Dark Mode</span></div> 
                 }
                 
                 </div>
