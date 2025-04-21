@@ -37,26 +37,35 @@ export default function Country(){
         }
     }, [])
 
-    useEffect( ()=>{
         const mainBg = document.getElementById('mainBg')
         let element = document.getElementsByClassName('element')
         let filter = document.getElementsByClassName('filter')
         let filterBg = document.getElementById('filterBg')
 
-        mainBg.classList.toggle('darkmodeBg')//switch to the dark enviroment
-        
-        if(filterBg){
-            filterBg.classList.toggle('bg-white')
+        if(mode === true){
+            mainBg.classList.add('darkmodeBg')//switch to the dark enviroment
+            if(filterBg){
+                filterBg.classList.remove('bg-white')
+            }//to switch dark mode for filter background
+            Array.from(filter).forEach((elements=>{
+                elements.classList.add('darkmode')
+            }))//to switch to dark mode for filter options
+            Array.from(element).forEach((elements=>{
+                elements.classList.add('darkmode')
+            }))//to switch dark mode for elements
         }
-
-        Array.from(filter).forEach((elements=>{
-            elements.classList.toggle('darkmode')
-        }))//to switch dark mode for elements
-
-        Array.from(element).forEach((elements=>{
-            elements.classList.toggle('darkmode')
-        }))//to switch dark mode for elements
-    }, [mode])//This useEffect hook handles changes in theme
+        else{
+            mainBg.classList.remove('darkmodeBg')//switch to the light enviroment
+            if(filterBg){
+                filterBg.classList.remove('bg-white')
+            }//to switch light mode for filter background
+            Array.from(filter).forEach((elements=>{
+                elements.classList.add('darkmode')
+            }))//to switch to ligth mode for filter options
+            Array.from(element).forEach((elements=>{
+                elements.classList.remove('darkmode')
+            }))//to switch ligth mode for elements
+        }
 
     const showOption = ()=>{  
         const filterBg = document.getElementById('filterBg')      
