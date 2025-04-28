@@ -11,7 +11,7 @@ const port = process.env.PORT;
 app.use(express.json());      
 app.use(express.static('public')); 
 app.use(cors({
-    origin: 'http://localhost:5174',
+    origin: 'http://localhost:5173',
     methods: ['Get']
 }))
 
@@ -31,9 +31,6 @@ app.get('/load', (req, res) => {
 
 app.get('/country/:country', (req, res)=>{
     const country = req.params.country
-    console.log(country)
     const datas = data.filter(datas => datas.name === country)
-    console.log(datas)
     res.json(datas)
-    console.log(datas)
 })

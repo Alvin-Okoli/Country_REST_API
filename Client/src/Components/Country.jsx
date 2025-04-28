@@ -14,7 +14,6 @@ export default function Country(){
 
     const [data, setData] = useState([])
     const [show, setShow] = useState(false)
-    const [test, setTest] = useState(false)
     const [regionFilter, setRegionFilter] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
     let {mode} = useContext(themeContext)
@@ -27,7 +26,6 @@ export default function Country(){
             const res = await fetch('http://localhost:5000/load', {signal});
             const data = await res.json();
             setData(data);
-            console.log(data)
         }
 
         fetchdata()
@@ -36,36 +34,6 @@ export default function Country(){
             controller.abort()
         }
     }, [])
-
-        const mainBg = document.getElementById('mainBg')
-        let element = document.getElementsByClassName('element')
-        let filter = document.getElementsByClassName('filter')
-        let filterBg = document.getElementById('filterBg')
-
-        if(mode === true){
-            mainBg.classList.add('darkmodeBg')//switch to the dark enviroment
-            if(filterBg){
-                filterBg.classList.remove('bg-white')
-            }//to switch dark mode for filter background
-            Array.from(filter).forEach((elements=>{
-                elements.classList.add('darkmode')
-            }))//to switch to dark mode for filter options
-            Array.from(element).forEach((elements=>{
-                elements.classList.add('darkmode')
-            }))//to switch dark mode for elements
-        }
-        else{
-            mainBg.classList.remove('darkmodeBg')//switch to the light enviroment
-            if(filterBg){
-                filterBg.classList.add('bg-white')
-            }//to switch light mode for filter background
-            Array.from(filter).forEach((elements=>{
-                elements.classList.remove('darkmode')
-            }))//to switch to ligth mode for filter options
-            Array.from(element).forEach((elements=>{
-                elements.classList.remove('darkmode')
-            }))//to switch ligth mode for elements
-        }
 
     const showOption = ()=>{  
         const filterBg = document.getElementById('filterBg')      
@@ -77,8 +45,7 @@ export default function Country(){
         filterBg.classList.toggle('hidden')//This toggles the filter options to show or hide    
     }//This switches show between true or false and shows the filter options
 
-    const filterRegion = (filter)=>{
-        console.log(filter)   
+    const filterRegion = (filter)=>{ 
         setRegionFilter(filter)
     }//This function filters the region sets the filter
 
@@ -93,21 +60,21 @@ export default function Country(){
 
     return(
         <>
-            <div id='mainBg' className="grid grid-cols-1 px-2 md:px-20 main">
+            <div id='mainBg' className={`grid grid-cols-1 px-2 md:px-20 main ${mode? 'darkmodeBg' : ''}`}>
 
                 <div className='grid grid-cols-1 md:flex md:justify-between py-10'>
 
-                    <div className="element w-[90%] mb-5 shadow pl-7 py-3 rounded-[5px]  mx-auto md:pl-[-28px] md:w-80 md:mx-0">
+                    <div className={`element w-[90%] mb-5 shadow pl-7 py-3 rounded-[5px]  mx-auto md:pl-[-28px] md:w-80 md:mx-0 ${mode? 'darkmode' : ''}`}>
                         <img src={mode? whiteSearchSvg : searchSvg} alt="search icon" className="inline-block w-5 mr-5"/>
                         <input type="search" 
                         placeholder="search for a country..." 
-                        className="element outline-none md:w-60"
+                        className={`element outline-none md:w-60 ${mode? 'placeholder:text-white' : ''}`}
                         onChange={handleSearch}
                         value={searchTerm} 
                         />
                     </div>
 
-                    <div className='element relative pt-2 shadow w-52 px-5 rounded-[5px] cursor-pointer z-1 ml-5'>
+                    <div className={`element relative pt-2 shadow w-52 px-5 rounded-[5px] cursor-pointer z-1 ml-5 ${mode? 'darkmode' : ''}`}>
                         
                         <div className="py-3 md:py-3 h-full w-full" onClick={showOption}>
 
@@ -123,12 +90,12 @@ export default function Country(){
                             </div>}
                          </div>
 
-                        <div id='filterBg' className='element hidden bg-white absolute top-4 mt-17 w-52 right-0 pl-5 rounded-[10px] py-4'>
-                            <div id='Africa' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>Africa</div>
-                            <div id='Americas' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>America</div>
-                            <div id='Asia' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>Asia</div>
-                            <div id='Europe' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>Europe</div>
-                            <div id='Oceania' className='filter'  onClick={(e)=>{filterRegion(e.target.id)}}>Oceania</div>
+                        <div id='filterBg' className={`element hidden absolute top-4 mt-17 w-52 right-0 pl-5 rounded-[10px] py-4 ${mode? '': 'bg-white'}`}>
+                            <div id='Africa' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>Africa</div>
+                            <div id='Americas' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>America</div>
+                            <div id='Asia' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>Asia</div>
+                            <div id='Europe' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>Europe</div>
+                            <div id='Oceania' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>Oceania</div>
                         </div>
 
                     </div>
@@ -137,7 +104,7 @@ export default function Country(){
 
                 <div className='grid grid-cols-1 gap-6 mx-2 mt-15 md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-14'>
                     {filteredData.map((datas)=>(
-                            <NavLink to={`/country/${datas.name}`} className='element cards shadow cursor-pointer mx-6 rounded-l pb-6 md:mx-0' key={datas.name}>
+                            <NavLink to={`/country/${datas.name}`} className={`element cards shadow cursor-pointer mx-6 rounded-l pb-6 md:mx-0 ${mode? 'darkmode' : ''}`} key={datas.name}>
                                 <img src={datas.flag} alt={datas.name} className='w-full mb-2 object-cover md:h-52'/> 
                                 <div>
                                     <div className='p-5'>
