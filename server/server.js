@@ -11,7 +11,7 @@ const port = process.env.PORT;
 app.use(express.json());      
 app.use(express.static('public')); 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://country-rest-api-black.vercel.app/',
     methods: ['Get']
 }))
 
