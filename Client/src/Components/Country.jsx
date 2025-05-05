@@ -60,11 +60,11 @@ export default function Country(){
 
     return(
         <>
-            <div id='mainBg' className={`grid grid-cols-1 px-2 md:px-20 h-auto min-h-screen ${mode? 'darkmodeBg' : ''}`}>
+            <div id='mainBg' className={`grid grid-cols-1 px-2 md:px-20 md:h-auto md:min-h-screen ${mode? 'darkmodeBg' : ''}`}>
 
                 <div className='grid grid-cols-1 md:flex md:justify-between py-10'>
 
-                    <div className={`element w-[90%] mb-5 shadow pl-7 py-3 rounded-[5px]  mx-auto md:pl-[-28px] md:w-80 md:mx-0 ${mode? 'darkmode' : ''}`}>
+                    <div className={`element w-[90%] mb-5 shadow pl-7 py-3 rounded-[5px]  mx-auto md:pl-[-28px] md:w-80 md:mx-0 md:h-18 ${mode? 'darkmode' : ''}`}>
                         <img src={mode? whiteSearchSvg : searchSvg} alt="search icon" className="inline-block w-5 mr-5"/>
                         <input type="search" 
                         placeholder="search for a country..." 
@@ -74,7 +74,7 @@ export default function Country(){
                         />
                     </div>
 
-                    <div className={`element relative pt-2 shadow w-52 px-5 rounded-[5px] cursor-pointer z-1 ml-5 ${mode? 'darkmode' : ''}`}>
+                    <div className={`element relative pt-2 shadow w-52 px-5 rounded-[5px] cursor-pointer z-1 ml-5 h-18 ${mode? 'darkmode' : ''}`}>
                         
                         <div className="py-3 md:py-3 h-full w-full" onClick={showOption}>
 
@@ -90,7 +90,7 @@ export default function Country(){
                             </div>}
                          </div>
 
-                        <div id='filterBg' className={`element hidden absolute top-4 mt-17 w-52 right-0 pl-5 rounded-[10px] py-4 ${mode? '': 'bg-white'}`}>
+                        <div id='filterBg' className={`element hidden absolute top-4 mt-17 w-52 right-0 pl-5 rounded-[10px] py-4 ${mode? 'darkmode': 'bg-white'}`}>
                             <div id='Africa' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>Africa</div>
                             <div id='Americas' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>America</div>
                             <div id='Asia' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>Asia</div>
