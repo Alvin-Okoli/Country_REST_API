@@ -60,7 +60,7 @@ export default function Country(){
 
     return(
         <>
-            <div id='mainBg' className={`grid grid-cols-1 px-2 md:px-20 main ${mode? 'darkmodeBg' : ''}`}>
+            <div id='mainBg' className={`grid grid-cols-1 px-2 md:px-20 h-auto min-h-screen ${mode? 'darkmodeBg' : ''}`}>
 
                 <div className='grid grid-cols-1 md:flex md:justify-between py-10'>
 
