@@ -16,7 +16,7 @@ export default function Nav(){
 
     return(
         <>
-            <div id="navBg" className={`flex justify-between px-6 pt-5 lg:px-20 mx-[-1px] h-18 shadow ${mode? 'darkmode' : ''}`}>
+            <nav id="navBg" className={`flex justify-between px-6 pt-5 lg:px-20 mx-[-1px] h-18 shadow ${mode? 'darkmode' : ''}`}>
 
                 <div className="font-bold">Where in the world?</div>
 
@@ -36,7 +36,7 @@ export default function Nav(){
                     }
                     
                 </div>
-        </div>
+        </nav>
 
         <Outlet/>
         </>
