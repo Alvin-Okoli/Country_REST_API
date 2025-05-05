@@ -23,7 +23,7 @@ export default function Country(){
         const signal = controller.signal;
 
         const fetchdata = async()=>{
-            const res = await fetch('http://localhost:5000/load', {signal});
+            const res = await fetch('https://country-rest-api-tghk.onrender.com/load', {signal});
             const data = await res.json();
             setData(data);
         }
