@@ -4,7 +4,6 @@ const data = require('./data.json')
 const cors = require('cors')
 
 //env file
-require('dotenv').config();
 const port = process.env.PORT;
 
 //middleware
