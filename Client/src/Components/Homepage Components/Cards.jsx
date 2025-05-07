@@ -8,7 +8,7 @@ const Cards = ({datas})=>{
     let {mode} = useContext(themeContext)
 
     return (
-        <NavLink to={`/country/${datas.name}`} className={`element cards shadow cursor-pointer mx-6 rounded-l pb-6 md:mx-0 ${mode? 'darkmode' : ''}`} key={datas.name}>
+        <NavLink to={`/country/:${datas.name}`} className={`element cards shadow cursor-pointer mx-6 rounded-l pb-6 md:mx-0 ${mode? 'darkmode' : ''}`} key={datas.name}>
         <LazyLoadImage src={datas.flag} alt={datas.name} className='w-full mb-2 object-cover md:h-52'/> 
         <div>
             <div className='p-5'>
