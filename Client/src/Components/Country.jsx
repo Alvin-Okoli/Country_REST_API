@@ -110,7 +110,7 @@ export default function Country(){
 
                 </div>
 
-                {isError?
+                {!isError?
                 <Suspense fallback={<div><SuspenseHandle/><SuspenseHandle/></div>}>
                 <div className='grid grid-cols-1 gap-6 mx-2 mt-15 md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-14'>
                     {filteredData.map((datas)=>(
