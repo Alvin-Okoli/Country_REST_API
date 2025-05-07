@@ -1,6 +1,10 @@
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState, useContext, lazy, useMemo, Suspense } from 'react'
 import { NavLink, Outlet } from 'react-router'
 import { themeContext } from './themeProvider'
+
+const Cards = lazy(()=> import('./Homepage Components/Cards'))
+const FilterOption = lazy(()=> import('./Homepage Components/Filter'))
+import SuspenseHandle from './Homepage Components/Suspense'
 
 //assets
 import searchSvg from '../assets/search-svgrepo-com.svg'
@@ -16,23 +20,22 @@ export default function Country(){
     const [show, setShow] = useState(false)
     const [regionFilter, setRegionFilter] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
-    let {mode} = useContext(themeContext)
-
-    useEffect(()=>{
-        const controller = new AbortController();
-        const signal = controller.signal;
-
-        const fetchdata = async()=>{
-            const res = await fetch('https://country-rest-api-tghk.onrender.com/load', {signal});
+    let {mode} = useContext(themeContext);
+    const errorMessage = 'Unfortunately we were unable to fetch countries data :-('
+    const fetchdata = async()=>{
+        try{
+            const res = await fetch('http://localhost:5000/load');
             const data = await res.json();
             setData(data);
         }
+        catch(err){
+            console.error(errorMessage)
+        }
+    }
 
+    useEffect(()=>{
         fetchdata()
 
-        return ()=>{
-            controller.abort()
-        }
     }, [])
 
     const showOption = ()=>{  
@@ -45,7 +48,7 @@ export default function Country(){
         filterBg.classList.toggle('hidden')//This toggles the filter options to show or hide    
     }//This switches show between true or false and shows the filter options
 
-    const filterRegion = (filter)=>{ 
+    const filterRegion = (filter)=>{
         setRegionFilter(filter)
     }//This function filters the region sets the filter
 
@@ -56,6 +59,8 @@ export default function Country(){
         const matchesSearch = searchTerm? country.name.toLowerCase().includes(searchTerm.toLowerCase()) : true;
         return matchesRegion && matchesSearch
     })//handles the filtering of the data based on the region and search term
+
+    const filters = [{id: 'Africa'},{id: 'Americas'},{id: 'Asia'},{id: 'Europe'},{id: 'Oceania'},{id: 'Polar'},]
     
 
     return(
@@ -88,36 +93,34 @@ export default function Country(){
                                 <span>Filter by Region</span>
                                 <span><img src={mode? whiteArrowUp : arrowUp} className='pb-3 w-5 mt-1 inline-block ml-2'/></span>
                             </div>}
-                         </div>
+                        </div>
 
                         <div id='filterBg' className={`element hidden absolute top-4 mt-17 w-52 right-0 pl-5 rounded-[10px] py-4 ${mode? 'darkmode': 'bg-white'}`}>
-                            <div id='Africa' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>Africa</div>
-                            <div id='Americas' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>America</div>
-                            <div id='Asia' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>Asia</div>
-                            <div id='Europe' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>Europe</div>
-                            <div id='Oceania' className={`filter ${mode? 'darkmode' : ''}`}  onClick={(e)=>{filterRegion(e.target.id)}}>Oceania</div>
+                            {filters.map((filter)=>(
+                                <FilterOption id={filter.id} mode={mode} filter={filterRegion} key={filter.id}/>
+                            ))}
+                            
                         </div>
 
                     </div>
 
                 </div>
 
+                {data.length > 0?
+                <Suspense fallback={<div><SuspenseHandle/><SuspenseHandle/></div>}>
                 <div className='grid grid-cols-1 gap-6 mx-2 mt-15 md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-14'>
                     {filteredData.map((datas)=>(
-                            <NavLink to={`/country/${datas.name}`} className={`element cards shadow cursor-pointer mx-6 rounded-l pb-6 md:mx-0 ${mode? 'darkmode' : ''}`} key={datas.name}>
-                                <img src={datas.flag} alt={datas.name} className='w-full mb-2 object-cover md:h-52'/> 
-                                <div>
-                                    <div className='p-5'>
-                                        <div className='font-bold my-3'>{datas.name}</div>
-                                        <div><span className='font-semibold'>Population: </span> <span className='font-light'>{(datas.population).toLocaleString()}</span></div>
-                                        <div><span className='font-semibold'>Region: </span> <span className='font-light'>{datas.region}</span></div>
-                                        <div><span className='font-semibold'>Capital: </span> <span className='font-light'>{datas.capital}</span></div>
-                                    </div>
-                                </div>
-                            </NavLink>
+                            <Cards datas={datas} key={datas.name}/>
                         ))
                     }
                 </div>
+                </Suspense>
+                :
+                <>
+                    <div className='text-red-400 mx-auto'>{errorMessage}</div>
+                    <div onClick={fetchdata} className='mx-auto shadow p-2 pl-8 rounded-2xl h-14 w-40 hover:bg-gray-300 hover:text-white cursor-pointer text-3xl'>refresh</div>
+                </>
+                }
 
             </div>
             <Outlet/>
