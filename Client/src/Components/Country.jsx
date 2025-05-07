@@ -20,16 +20,19 @@ export default function Country(){
     const [show, setShow] = useState(false)
     const [regionFilter, setRegionFilter] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
+    const [isError, setIsError] = useState('false')
     let {mode} = useContext(themeContext);
     const errorMessage = 'Unfortunately we were unable to fetch countries data :-('
     const fetchdata = async()=>{
         try{
+            setIsError(false)
             const res = await fetch('https://country-rest-api-tghk.onrender.com');
             const data = await res.json();
             setData(data);
             console.log(data)
         }
         catch(err){
+            setIsError(true)
             console.error(errorMessage)
             console.log(data)
         }
@@ -108,7 +111,7 @@ export default function Country(){
 
                 </div>
 
-                {data.length > 0?
+                {isError?
                 <Suspense fallback={<div><SuspenseHandle/><SuspenseHandle/></div>}>
                 <div className='grid grid-cols-1 gap-6 mx-2 mt-15 md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-14'>
                     {filteredData.map((datas)=>(
