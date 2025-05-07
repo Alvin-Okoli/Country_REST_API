@@ -26,7 +26,7 @@ export default function Country(){
     const fetchdata = async()=>{
         try{
             setIsError(false)
-            const res = await fetch('https://country-rest-api-tghk.onrender.com');
+            const res = await fetch('https://country-rest-api-tghk.onrender.com/load');
             const data = await res.json();
             setData(data);
         }
