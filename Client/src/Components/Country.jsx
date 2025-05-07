@@ -33,6 +33,7 @@ export default function Country(){
         catch(err){
             setIsError(true)
             console.error(errorMessage)
+            setData([])
         }
     }
 
