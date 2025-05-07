@@ -88,7 +88,7 @@ export default function Countryinfo(){
 
                     {datas.borders? 
                     datas.borders.map((border)=>(
-                        <span className="shadow mx-2 p-2 text-[10px]">{border}</span>
+                        <span className="shadow mx-2 p-2 text-[10px]" key={border}>{border}</span>
                     )) 
                     : 
                     <span>n/a</span> }

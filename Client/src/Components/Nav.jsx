@@ -6,12 +6,16 @@ import { themeContext } from "./themeProvider";
 
 
 export default function Nav(){
-    let {mode ,setMode} = useContext(themeContext)
+    let {mode ,setMode} = useContext(themeContext)   
 
     const changeMode = ()=>{
         if(mode === false){
             setMode(true)
-        }else setMode(false)
+            localStorage.setItem('mode', 'true')
+        }else {
+            setMode(false)
+            localStorage.setItem('mode', 'false')
+        }
     }
 
     return(
