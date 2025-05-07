@@ -27,9 +27,11 @@ export default function Country(){
             const res = await fetch('https://country-rest-api-tghk.onrender.com');
             const data = await res.json();
             setData(data);
+            console.log(data)
         }
         catch(err){
             console.error(errorMessage)
+            console.log(data)
         }
     }
 
