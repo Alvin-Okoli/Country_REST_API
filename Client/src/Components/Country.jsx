@@ -24,7 +24,7 @@ export default function Country(){
     const errorMessage = 'Unfortunately we were unable to fetch countries data :-('
     const fetchdata = async()=>{
         try{
-            const res = await fetch('http://localhost:5000/load');
+            const res = await fetch('https://country-rest-api-tghk.onrender.com');
             const data = await res.json();
             setData(data);
         }
